@@ -1,0 +1,13 @@
+porkbun_api_key: changeme
+porkbun_secret_key: changeme
+
+update_interval_minutes: 5
+
+records:
+  - domain: example.com
+    host: www
+    ipv6: true
+    ipv4: true
+  - domain: example.com
+    host: blog
+    ipv4: true
