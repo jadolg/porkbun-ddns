@@ -8,17 +8,22 @@ import (
 )
 
 type Record struct {
-	Domain string `yaml:"domain"`
-	Host   string `yaml:"host"`
-	IpV6   bool   `yaml:"ipv6"`
-	IpV4   bool   `yaml:"ipv4"`
+	Domain      string `yaml:"domain"`
+	Host        string `yaml:"host"`
+	IpV6        bool   `yaml:"ipv6"`
+	IpV4        bool   `yaml:"ipv4"`
+	Credentials string `yaml:"credentials"`
+}
+
+type PorkbunCredentials struct {
+	PorkbunAPIKey    string `yaml:"porkbun_api_key"`
+	PorkbunSecretKey string `yaml:"porkbun_secret_key"`
 }
 
 type configuration struct {
-	PorkbunAPIKey         string   `yaml:"porkbun_api_key"`
-	PorkbunSecretKey      string   `yaml:"porkbun_secret_key"`
-	Records               []Record `yaml:"records"`
-	UpdateIntervalMinutes int      `yaml:"update_interval_minutes"`
+	Records               []Record                      `yaml:"records"`
+	UpdateIntervalMinutes int                           `yaml:"update_interval_minutes"`
+	PorkbunCredentials    map[string]PorkbunCredentials `yaml:"credentials"`
 }
 
 func getConfig(configFile string) (configuration, error) {
@@ -32,8 +37,10 @@ func getConfig(configFile string) (configuration, error) {
 		return configuration{}, err
 	}
 
-	if c.PorkbunAPIKey == "" || c.PorkbunSecretKey == "" {
-		return configuration{}, fmt.Errorf("the Porkbun API key and Secret key should be provided in the configuration")
+	for _, credential := range c.PorkbunCredentials {
+		if credential.invalid() {
+			return configuration{}, fmt.Errorf("invalid credentials configuration detected %+v", credential)
+		}
 	}
 
 	for _, record := range c.Records {
@@ -46,5 +53,9 @@ func getConfig(configFile string) (configuration, error) {
 }
 
 func (r Record) invalid() bool {
-	return (!r.IpV4 && !r.IpV6) || r.Domain == "" || r.Host == ""
+	return (!r.IpV4 && !r.IpV6) || r.Domain == "" || r.Host == "" || r.Credentials == ""
+}
+
+func (c PorkbunCredentials) invalid() bool {
+	return c.PorkbunAPIKey == "" || c.PorkbunSecretKey == ""
 }

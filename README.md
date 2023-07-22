@@ -7,6 +7,7 @@ Your IP address is determined using https://wtfismyip.com/
 
 - Run `snap install porkbun-ddns`
 - Place your configuration at `/var/snap/porkbun-ddns/common/config.yaml`
+- An example configuration can be found at https://raw.githubusercontent.com/jadolg/porkbun-ddns/main/example.config.yaml
 - Restart the service `snap restart porkbun-ddns`
 
 ## Example configuration
@@ -17,12 +18,23 @@ porkbun_secret_key: changeme
 
 update_interval_minutes: 5
 
+credentials:
+  prod:
+    porkbun_api_key: changeme
+    porkbun_secret_key: changeme
+  dev:
+    porkbun_api_key: changeme
+    porkbun_secret_key: changeme
+
 records:
   - domain: example.com
     host: www
     ipv6: true
     ipv4: true
+    credentials: prod
   - domain: example.com
     host: blog
     ipv4: true
+    credentials: dev
+
 ```
