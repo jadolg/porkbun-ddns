@@ -15,8 +15,8 @@ type Record struct {
 }
 
 type configuration struct {
-	PorkbunAPIKey         string
-	PorkbunSecretKey      string
+	PorkbunAPIKey         string   `yaml:"porkbun_api_key"`
+	PorkbunSecretKey      string   `yaml:"porkbun_secret_key"`
 	Records               []Record `yaml:"records"`
 	UpdateIntervalMinutes int      `yaml:"update_interval_minutes"`
 }
