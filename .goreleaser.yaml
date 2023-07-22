@@ -32,3 +32,26 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+
+snapcrafts:
+  -
+    id: porkbun-ddns
+    name: porkbun-ddns
+    publish: true
+    summary: Keep your Porkbun DNS records updated with your current IP address
+    description: |
+      This project updates your DNS records at Porkbun with your current public IP address.
+      Your IP address is determined using https://wtfismyip.com/
+      Place your configuration at `/var/snap/porkbun-ddns/common/config.yaml` and restart the service `snap restart porkbun-ddns`
+    channel_templates:
+      - stable
+    grade: stable
+    confinement: strict
+    license: MIT
+    base: core22
+    apps:
+      porkbun-ddns:
+        command: porkbun-ddns
+        daemon: simple
+        args: -config $SNAP_COMMON/config.yaml
+        plugs: ["network"]
