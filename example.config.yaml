@@ -1,6 +1,3 @@
-porkbun_api_key: changeme
-porkbun_secret_key: changeme
-
 update_interval_minutes: 5
 
 credentials:

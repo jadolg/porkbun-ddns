@@ -13,9 +13,6 @@ Your IP address is determined using https://wtfismyip.com/
 ## Example configuration
 
 ```yaml
-porkbun_api_key: changeme
-porkbun_secret_key: changeme
-
 update_interval_minutes: 5
 
 credentials:
