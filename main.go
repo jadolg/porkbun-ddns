@@ -55,14 +55,14 @@ func updateRecords(c configuration) {
 	}
 	log.Debugf("Current host ipv6: %s", ipv6address)
 
-	client, err := getPorkbunClient(c)
-	if err != nil {
-		log.Error(err)
-	}
-
 	ctx := context.Background()
 
 	for _, record := range c.Records {
+		client, err := getPorkbunClient(c, record.Credentials)
+		if err != nil {
+			log.Error(err)
+			continue
+		}
 		ipv4Record, ipv6Record, err := getRecords(ctx, record.Domain, record.Host, client)
 		if err != nil {
 			log.Error(err)
