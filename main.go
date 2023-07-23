@@ -11,8 +11,10 @@ import (
 func main() {
 	var configFile string
 	var logLevel string
+	var runOnce bool
 	flag.StringVar(&configFile, "config", "./config.yaml", "Path to config file")
 	flag.StringVar(&logLevel, "loglevel", "info", "Log level")
+	flag.BoolVar(&runOnce, "run-once", false, "disables the periodic update")
 	flag.Parse()
 
 	err := setLogLevel(logLevel)
@@ -27,9 +29,11 @@ func main() {
 
 	updateRecords(c)
 
-	tick := time.Tick(time.Duration(c.UpdateIntervalMinutes) * time.Minute)
-	for range tick {
-		updateRecords(c)
+	if !runOnce {
+		tick := time.Tick(time.Duration(c.UpdateIntervalMinutes) * time.Minute)
+		for range tick {
+			updateRecords(c)
+		}
 	}
 }
 
