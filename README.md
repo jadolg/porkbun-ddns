@@ -8,7 +8,7 @@ Your IP address is determined using https://wtfismyip.com/
 - Run `snap install porkbun-ddns`
 - Place your configuration at `/var/snap/porkbun-ddns/common/config.yaml`
 - An example configuration can be found at https://raw.githubusercontent.com/jadolg/porkbun-ddns/main/example.config.yaml
-- Restart the service `snap restart porkbun-ddns`
+- Restart the service `snap restart porkbun-ddns.porkbun-ddns-daemon`
 
 ## Example configuration
 

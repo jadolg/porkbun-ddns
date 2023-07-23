@@ -19,8 +19,8 @@ archives:
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     format_overrides:
-    - goos: windows
-      format: zip
+      - goos: windows
+        format: zip
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -33,15 +33,14 @@ changelog:
       - '^test:'
 
 snapcrafts:
-  -
-    id: porkbun-ddns
+  - id: porkbun-ddns
     name: porkbun-ddns
     publish: true
     summary: Keep your Porkbun DNS records updated with your current IP address
     description: |
       This project updates your DNS records at Porkbun with your current public IP address.
       Your IP address is determined using https://wtfismyip.com/
-      Place your configuration at `/var/snap/porkbun-ddns/common/config.yaml` and restart the service `snap restart porkbun-ddns`
+      Place your configuration at `/var/snap/porkbun-ddns/common/config.yaml` and restart the service `snap restart porkbun-ddns.porkbun-ddns-daemon`
     channel_templates:
       - stable
     grade: stable
@@ -49,8 +48,11 @@ snapcrafts:
     license: MIT
     base: core22
     apps:
-      porkbun-ddns:
+      porkbun-ddns-daemon:
         command: porkbun-ddns
         daemon: simple
         args: -config $SNAP_COMMON/config.yaml
-        plugs: ["network"]
+        plugs: [ "network" ]
+      porkbun-ddns:
+        command: porkbun-ddns
+        plugs: [ "network", "home" , "removable-media"]
