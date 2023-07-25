@@ -5,6 +5,10 @@ Your IP address is determined using https://wtfismyip.com/
 
 ## Install
 
+<a href="https://snapcraft.io/porkbun-ddns">
+  <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
+</a>
+
 - Run `snap install porkbun-ddns`
 - Place your configuration at `/var/snap/porkbun-ddns/common/config.yaml`
 - An example configuration can be found at https://raw.githubusercontent.com/jadolg/porkbun-ddns/main/example.config.yaml
