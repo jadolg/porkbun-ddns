@@ -74,6 +74,7 @@ func updateRecords(c configuration) {
 	if err != nil {
 		log.Error(err)
 	}
+	log.Info("Records updated")
 }
 
 func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ipv4address string, ipv6address string) {
