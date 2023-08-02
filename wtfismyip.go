@@ -12,7 +12,6 @@ type WTFIsMyIPData struct {
 }
 
 func getIpAddress(ipv6 bool) (string, error) {
-
 	wtfismyipURL := "https://ipv4.wtfismyip.com/json"
 	if ipv6 {
 		wtfismyipURL = "https://ipv6.wtfismyip.com/json"
