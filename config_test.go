@@ -6,9 +6,9 @@ import (
 
 func TestPorkbunCredentials_invalid(t *testing.T) {
 	tests := []struct {
-		name   string
-		fields PorkbunCredentials
-		want   bool
+		name        string
+		credentials PorkbunCredentials
+		want        bool
 	}{
 		{
 			"When API Key is empty then return true",
@@ -38,8 +38,8 @@ func TestPorkbunCredentials_invalid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := PorkbunCredentials{
-				PorkbunAPIKey:    tt.fields.PorkbunAPIKey,
-				PorkbunSecretKey: tt.fields.PorkbunSecretKey,
+				PorkbunAPIKey:    tt.credentials.PorkbunAPIKey,
+				PorkbunSecretKey: tt.credentials.PorkbunSecretKey,
 			}
 			if got := c.invalid(); got != tt.want {
 				t.Errorf("invalid() = %v, want %v", got, tt.want)
@@ -51,7 +51,7 @@ func TestPorkbunCredentials_invalid(t *testing.T) {
 func TestRecord_invalid(t *testing.T) {
 	tests := []struct {
 		name   string
-		fields Record
+		record Record
 		want   bool
 	}{
 		{
@@ -100,11 +100,11 @@ func TestRecord_invalid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := Record{
-				Domain:      tt.fields.Domain,
-				Host:        tt.fields.Host,
-				IpV6:        tt.fields.IpV6,
-				IpV4:        tt.fields.IpV4,
-				Credentials: tt.fields.Credentials,
+				Domain:      tt.record.Domain,
+				Host:        tt.record.Host,
+				IpV6:        tt.record.IpV6,
+				IpV4:        tt.record.IpV4,
+				Credentials: tt.record.Credentials,
 			}
 			if got := r.invalid(); got != tt.want {
 				t.Errorf("invalid() = %v, want %v", got, tt.want)
