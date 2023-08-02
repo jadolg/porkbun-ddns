@@ -49,17 +49,29 @@ func setLogLevel(logLevel string) error {
 
 func updateRecords(c configuration) {
 	log.Info("Updating records")
-	ipv4address, err := getIpAddress(false)
-	if err != nil {
-		log.Error(err)
+	ipv4needed, ipv6needed := ipNeeded(c)
+	ipv4address := ""
+	if ipv4needed {
+		wtfIPv4address, err := getIpAddress(false)
+		if err != nil {
+			log.Error(err)
+		}
+		ipv4address = wtfIPv4address
+		log.Debugf("Current host ipv4: %s", ipv4address)
+	} else {
+		log.Debug("No ipv4 needed")
 	}
-	log.Debugf("Current host ipv4: %s", ipv4address)
-	ipv6address, err := getIpAddress(true)
-	if err != nil {
-		log.Error(err)
+	ipv6address := ""
+	if ipv6needed {
+		wtfIPv6address, err := getIpAddress(true)
+		if err != nil {
+			log.Error(err)
+		}
+		ipv6address = wtfIPv6address
+		log.Debugf("Current host ipv6: %s", ipv6address)
+	} else {
+		log.Debug("No ipv6 needed")
 	}
-	log.Debugf("Current host ipv6: %s", ipv6address)
-
 	ctx := context.Background()
 
 	for _, record := range c.Records {
@@ -69,10 +81,6 @@ func updateRecords(c configuration) {
 			continue
 		}
 		updateRecord(ctx, record, client, ipv4address, ipv6address)
-	}
-
-	if err != nil {
-		log.Error(err)
 	}
 	log.Info("Records updated")
 }

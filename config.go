@@ -59,3 +59,18 @@ func (r Record) invalid() bool {
 func (c PorkbunCredentials) invalid() bool {
 	return c.PorkbunAPIKey == "" || c.PorkbunSecretKey == ""
 }
+
+func ipNeeded(c configuration) (ipv4needed, ipv6needed bool) {
+	for _, record := range c.Records {
+		if record.IpV4 {
+			ipv4needed = true
+		}
+		if record.IpV6 {
+			ipv6needed = true
+		}
+		if ipv4needed && ipv6needed {
+			return
+		}
+	}
+	return
+}
