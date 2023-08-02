@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -111,4 +112,31 @@ func TestRecord_invalid(t *testing.T) {
 			}
 		})
 	}
+}
+
+func Test_getConfig(t *testing.T) {
+	config, err := getConfig("example.config.yaml")
+	assert.NoError(t, err)
+	assert.NotNil(t, config)
+	assert.Equal(t, 5, config.UpdateIntervalMinutes)
+	assert.Equal(t, map[string]PorkbunCredentials{
+		"prod": {PorkbunAPIKey: "changeme", PorkbunSecretKey: "changeme"},
+		"dev":  {PorkbunAPIKey: "changeme", PorkbunSecretKey: "changeme"},
+	}, config.PorkbunCredentials)
+	assert.Equal(t, []Record{
+		{
+			Domain:      "example.com",
+			Host:        "www",
+			IpV6:        true,
+			IpV4:        true,
+			Credentials: "prod",
+		},
+		{
+			Domain:      "example.com",
+			Host:        "blog",
+			IpV6:        false,
+			IpV4:        true,
+			Credentials: "dev",
+		},
+	}, config.Records)
 }
