@@ -47,6 +47,9 @@ func getConfig(configFile string) (configuration, error) {
 		if record.invalid() {
 			return configuration{}, fmt.Errorf("invalid record configuration detected %+v", record)
 		}
+		if _, found := c.PorkbunCredentials[record.Credentials]; !found {
+			return configuration{}, fmt.Errorf("invalid record credentials detected %+v", record)
+		}
 	}
 
 	return c, nil
