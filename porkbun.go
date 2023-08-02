@@ -84,3 +84,20 @@ func getPorkbunClient(c configuration, credentialsName string) (*porkbun.Client,
 	log.Debugf("Connected to porkbun from %s using credentials %s", yourIP, credentialsName)
 	return client, nil
 }
+
+func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ipv4address string, ipv6address string) {
+	ipv4Record, ipv6Record, err := getRecords(ctx, record.Domain, record.Host, client)
+	if err != nil {
+		log.Error(err)
+	}
+	if record.IpV4 && ipv4Record != nil && ipv4address != "" && ipv4Record.Content != ipv4address {
+		err = createOrUpdateRecord(ctx, client, ipv4Record.ID, record.Domain, record.Host, "A", ipv4address)
+	} else {
+		log.Debugf("Ipv4 update not required for %s.%s", record.Host, record.Domain)
+	}
+	if record.IpV6 && ipv6Record != nil && ipv6address != "" && ipv6Record.Content != ipv6address {
+		err = createOrUpdateRecord(ctx, client, ipv6Record.ID, record.Domain, record.Host, "AAAA", ipv6address)
+	} else {
+		log.Debugf("Ipv6 update not required for %s.%s", record.Host, record.Domain)
+	}
+}

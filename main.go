@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/nrdcg/porkbun"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -49,29 +48,8 @@ func setLogLevel(logLevel string) error {
 
 func updateRecords(c configuration) {
 	log.Info("Updating records")
-	ipv4needed, ipv6needed := ipNeeded(c)
-	ipv4address := ""
-	if ipv4needed {
-		wtfIPv4address, err := getIpAddress(false)
-		if err != nil {
-			log.Error(err)
-		}
-		ipv4address = wtfIPv4address
-		log.Debugf("Current host ipv4: %s", ipv4address)
-	} else {
-		log.Debug("No ipv4 needed")
-	}
-	ipv6address := ""
-	if ipv6needed {
-		wtfIPv6address, err := getIpAddress(true)
-		if err != nil {
-			log.Error(err)
-		}
-		ipv6address = wtfIPv6address
-		log.Debugf("Current host ipv6: %s", ipv6address)
-	} else {
-		log.Debug("No ipv6 needed")
-	}
+	ipv4address, ipv6address := getIpAddresses(c, wtfismyipClient{})
+
 	ctx := context.Background()
 
 	for _, record := range c.Records {
@@ -83,21 +61,4 @@ func updateRecords(c configuration) {
 		updateRecord(ctx, record, client, ipv4address, ipv6address)
 	}
 	log.Info("Records updated")
-}
-
-func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ipv4address string, ipv6address string) {
-	ipv4Record, ipv6Record, err := getRecords(ctx, record.Domain, record.Host, client)
-	if err != nil {
-		log.Error(err)
-	}
-	if record.IpV4 && ipv4Record != nil && ipv4address != "" && ipv4Record.Content != ipv4address {
-		err = createOrUpdateRecord(ctx, client, ipv4Record.ID, record.Domain, record.Host, "A", ipv4address)
-	} else {
-		log.Debugf("Ipv4 update not required for %s.%s", record.Host, record.Domain)
-	}
-	if record.IpV6 && ipv6Record != nil && ipv6address != "" && ipv6Record.Content != ipv6address {
-		err = createOrUpdateRecord(ctx, client, ipv6Record.ID, record.Domain, record.Host, "AAAA", ipv6address)
-	} else {
-		log.Debugf("Ipv6 update not required for %s.%s", record.Host, record.Domain)
-	}
 }
