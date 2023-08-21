@@ -9,7 +9,7 @@ import (
 
 type Record struct {
 	Domain      string `yaml:"domain"`
-	Host        string `yaml:"host"`
+	Host        string `yaml:"host,omitempty"`
 	IpV6        bool   `yaml:"ipv6"`
 	IpV4        bool   `yaml:"ipv4"`
 	Credentials string `yaml:"credentials"`
@@ -56,7 +56,7 @@ func getConfig(configFile string) (configuration, error) {
 }
 
 func (r Record) invalid() bool {
-	return (!r.IpV4 && !r.IpV6) || r.Domain == "" || r.Host == "" || r.Credentials == ""
+	return (!r.IpV4 && !r.IpV6) || r.Domain == "" || r.Credentials == ""
 }
 
 func (c PorkbunCredentials) invalid() bool {

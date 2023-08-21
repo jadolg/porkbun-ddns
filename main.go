@@ -58,7 +58,10 @@ func updateRecords(c configuration) {
 			log.Error(err)
 			continue
 		}
-		updateRecord(ctx, record, client, ipv4address, ipv6address)
+		err = updateRecord(ctx, record, client, ipv4address, ipv6address)
+		if err != nil {
+			log.Error(err)
+		}
 	}
 	log.Info("Records updated")
 }
