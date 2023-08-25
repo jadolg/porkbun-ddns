@@ -47,18 +47,23 @@ func setLogLevel(logLevel string) error {
 }
 
 func updateRecords(c configuration) {
+	clients, err := getPorkbunClients(c.PorkbunCredentials)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Info("Updating records")
 	ipv4address, ipv6address := getIpAddresses(c, wtfismyipClient{})
 
 	ctx := context.Background()
 
 	for _, record := range c.Records {
-		client, err := getPorkbunClient(c, record.Credentials)
-		if err != nil {
-			log.Error(err)
+		client, exists := clients[record.Credentials]
+		if !exists {
+			log.Errorf("Credentials not found: %s", record.Credentials)
 			continue
 		}
-		err = updateRecord(ctx, record, client, ipv4address, ipv6address)
+		err := updateRecord(ctx, record, client, ipv4address, ipv6address)
 		if err != nil {
 			log.Error(err)
 		}

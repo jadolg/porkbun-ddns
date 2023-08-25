@@ -68,11 +68,21 @@ func getRecords(ctx context.Context, domain, host string, client *porkbun.Client
 	return &ipv4Record, &ipv6Record, nil
 }
 
-func getPorkbunClient(c configuration, credentialsName string) (*porkbun.Client, error) {
-	credentials, exists := c.PorkbunCredentials[credentialsName]
-	if !exists {
-		return nil, fmt.Errorf("credentials %s not found", credentialsName)
+func getPorkbunClients(credentials map[string]PorkbunCredentials) (map[string]*porkbun.Client, error) {
+	clients := make(map[string]*porkbun.Client)
+
+	for key, credential := range credentials {
+		client, err := getPorkbunClient(credential, key)
+		if err != nil {
+			log.Error(err)
+			continue
+		}
+		clients[key] = client
 	}
+	return clients, nil
+}
+
+func getPorkbunClient(credentials PorkbunCredentials, credentialsName string) (*porkbun.Client, error) {
 	client := porkbun.New(credentials.PorkbunSecretKey, credentials.PorkbunAPIKey)
 
 	ctx := context.Background()
