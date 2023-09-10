@@ -20,10 +20,16 @@ type PorkbunCredentials struct {
 	PorkbunSecretKey string `yaml:"porkbun_secret_key"`
 }
 
+type MetricsConfig struct {
+	Enabled bool `yaml:"enabled"`
+	Port    int  `yaml:"port"`
+}
+
 type configuration struct {
 	Records               []Record                      `yaml:"records"`
 	UpdateIntervalMinutes int                           `yaml:"update_interval_minutes"`
 	PorkbunCredentials    map[string]PorkbunCredentials `yaml:"credentials"`
+	Metrics               MetricsConfig                 `yaml:"metrics"`
 }
 
 func getConfig(configFile string) (configuration, error) {

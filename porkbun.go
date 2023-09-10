@@ -74,6 +74,7 @@ func getPorkbunClients(credentials map[string]PorkbunCredentials) (map[string]*p
 	for key, credential := range credentials {
 		client, err := getPorkbunClient(credential, key)
 		if err != nil {
+			credentialsErrorTotal.Inc()
 			log.Error(err)
 			continue
 		}
