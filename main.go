@@ -32,8 +32,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Infof("Version: %s, Commit: %s, Date: %s, BuiltBy: %s", Version, Commit, Date, BuiltBy)
 	if version {
-		log.Infof("Version: %s, Commit: %s, Date: %s, BuiltBy: %s", Version, Commit, Date, BuiltBy)
 		return
 	}
 
