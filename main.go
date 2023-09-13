@@ -8,18 +8,33 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var (
+	Version = "dev"
+	Commit  = "none"
+	Date    = "unknown"
+	BuiltBy = "dirty hands"
+)
+
 func main() {
 	var configFile string
 	var logLevel string
 	var runOnce bool
+	var version bool
+
 	flag.StringVar(&configFile, "config", "./config.yaml", "Path to config file")
 	flag.StringVar(&logLevel, "loglevel", "info", "Log level")
 	flag.BoolVar(&runOnce, "run-once", false, "disables the periodic update")
+	flag.BoolVar(&version, "version", false, "prints version and exits")
 	flag.Parse()
 
 	err := setLogLevel(logLevel)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if version {
+		log.Infof("Version: %s, Commit: %s, Date: %s, BuiltBy: %s", Version, Commit, Date, BuiltBy)
+		return
 	}
 
 	c, err := getConfig(configFile)
