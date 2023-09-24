@@ -56,7 +56,7 @@ func getRecords(ctx context.Context, domain, host string, client *porkbun.Client
 	var ipv6Record porkbun.Record
 
 	for _, record := range records {
-		if record.Name == fmt.Sprintf("%s.%s", host, domain) {
+		if record.Name == fmt.Sprintf("%s.%s", host, domain) || (host == "" && record.Name == domain) {
 			if record.Type == "A" {
 				ipv4Record = record
 			} else if record.Type == "AAAA" {
@@ -107,7 +107,10 @@ func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ip
 			resultError = errors.Join(resultError, err)
 		}
 	} else {
-		log.Debugf("Ipv4 update not required for %s.%s", record.Host, record.Domain)
+		log.WithFields(log.Fields{
+			"host":   record.Host,
+			"domain": record.Domain,
+		}).Debug("Ipv4 update not required")
 	}
 	if record.IpV6 && ipv6Record != nil && ipv6address != "" && ipv6Record.Content != ipv6address {
 		err = createOrUpdateRecord(ctx, client, ipv6Record.ID, record.Domain, record.Host, "AAAA", ipv6address)
@@ -115,7 +118,10 @@ func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ip
 			resultError = errors.Join(resultError, err)
 		}
 	} else {
-		log.Debugf("Ipv6 update not required for %s.%s", record.Host, record.Domain)
+		log.WithFields(log.Fields{
+			"host":   record.Host,
+			"domain": record.Domain,
+		}).Debug("Ipv6 update not required")
 	}
 	return
 }
