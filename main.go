@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"flag"
+	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/term"
 )
 
 var (
@@ -27,7 +29,7 @@ func main() {
 	flag.BoolVar(&version, "version", false, "prints version and exits")
 	flag.Parse()
 
-	err := setLogLevel(logLevel)
+	err := configureLogs(logLevel)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,12 +54,15 @@ func main() {
 	}
 }
 
-func setLogLevel(logLevel string) error {
+func configureLogs(logLevel string) error {
 	parsedLogLevel, err := log.ParseLevel(logLevel)
 	if err != nil {
 		return err
 	}
 	log.SetLevel(parsedLogLevel)
+	if !term.IsTerminal(int(os.Stdout.Fd())) {
+		log.SetFormatter(&log.JSONFormatter{})
+	}
 	return err
 }
 
@@ -80,7 +85,15 @@ func updateRecords(c configuration) {
 		}
 		err := updateRecord(ctx, record, client, ipv4address, ipv6address)
 		if err != nil {
-			log.Error(err)
+			log.WithFields(log.Fields{
+				"host":        record.Host,
+				"domain":      record.Domain,
+				"IPv4":        record.IpV4,
+				"IPv6":        record.IpV6,
+				"credentials": record.Credentials,
+				"IPv4Address": ipv4address,
+				"IPv6Address": ipv6address,
+			}).Error(err)
 		}
 	}
 	log.Info("Records updated")
