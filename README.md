@@ -16,11 +16,16 @@ Your IP address is determined using https://wtfismyip.com/
 
 ### Docker
 
-Modify the following command to match your speciffic requirements (path to the config file):
+Modify the following command to match your specific requirements (path to the config file):
 ```
 docker run -d --restart always --network host -v $PWD/config.yaml:/config.yaml ghcr.io/jadolg/porkbun-ddns:latest
 ```
 *note:* I'm using `--network host` to avoid setting up IPv6 in Docker.
+
+### Direct download
+
+Not a fan of running snaps or docker? Not a problem!
+Grab the binary for your system/architecture directly from the [release](https://github.com/jadolg/porkbun-ddns/releases) page and start using it.
 
 ## Example configuration
 
@@ -45,5 +50,4 @@ records:
     host: blog
     ipv4: true
     credentials: dev
-
 ```
