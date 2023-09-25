@@ -1,4 +1,4 @@
-module porkbun-ddns
+module github.com/jadolg/porkbun-ddns
 
 go 1.21
 
