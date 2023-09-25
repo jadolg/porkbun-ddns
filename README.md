@@ -27,6 +27,10 @@ docker run -d --restart always --network host -v $PWD/config.yaml:/config.yaml g
 Not a fan of running snaps or docker? Not a problem!
 Grab the binary for your system/architecture directly from the [release](https://github.com/jadolg/porkbun-ddns/releases) page and start using it.
 
+### From source
+
+You can also just install from GitHub using Go directly `go install github.com/jadolg/porkbun-ddns@v0.6.1`
+
 ## Example configuration
 
 ```yaml
