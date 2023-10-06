@@ -93,6 +93,7 @@ func updateRecords(c configuration) {
 		}
 		err := updateRecord(ctx, record, client, ipv4address, ipv6address)
 		if err != nil {
+			updateErrorsTotal.WithLabelValues(record.Host, record.Domain).Inc()
 			log.WithFields(log.Fields{
 				"host":        record.Host,
 				"domain":      record.Domain,
