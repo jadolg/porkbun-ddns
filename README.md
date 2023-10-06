@@ -54,4 +54,15 @@ records:
     host: blog
     ipv4: true
     credentials: dev
+
+metrics:
+  enabled: false
+  port: 7879
 ```
+
+## Metrics
+
+To enable the collection of metrics, change the config file and set a valid port.
+The current metrics are:
+- porkbun_update_errors_total
+- porkbun_credentials_error_total

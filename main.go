@@ -43,7 +43,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	if c.Metrics.Enabled {
+		go func() {
+			err := startMetricsServer(c.Metrics.Port)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}()
+	}
 	updateRecords(c)
 
 	if !runOnce {
@@ -80,11 +87,13 @@ func updateRecords(c configuration) {
 	for _, record := range c.Records {
 		client, exists := clients[record.Credentials]
 		if !exists {
+			credentialsErrorTotal.Inc()
 			log.Errorf("Credentials not found: %s", record.Credentials)
 			continue
 		}
 		err := updateRecord(ctx, record, client, ipv4address, ipv6address)
 		if err != nil {
+			updateErrorsTotal.WithLabelValues(record.Host, record.Domain).Inc()
 			log.WithFields(log.Fields{
 				"host":        record.Host,
 				"domain":      record.Domain,
