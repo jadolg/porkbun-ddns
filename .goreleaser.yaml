@@ -69,7 +69,7 @@ snapcrafts:
         command: porkbun-ddns
         daemon: simple
         args: -config $SNAP_COMMON/config.yaml
-        plugs: [ "network" ]
+        plugs: [ "network" , "network-bind" ]
       porkbun-ddns:
         command: porkbun-ddns
         plugs: [ "network", "home" , "removable-media", "network-bind" ]
