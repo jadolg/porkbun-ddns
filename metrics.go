@@ -21,6 +21,13 @@ var (
 		Name: "porkbun_credentials_error_total",
 		Help: "The total number of credentials errors",
 	})
+	updateSuccessTotal = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "porkbun_update_success_total",
+			Help: "The total number of successful updates",
+		},
+		[]string{"host", "domain", "record_type"},
+	)
 )
 
 func healthcheckHandler(w http.ResponseWriter, _ *http.Request) {
