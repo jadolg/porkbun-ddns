@@ -106,6 +106,8 @@ func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ip
 		err = createOrUpdateRecord(ctx, client, ipv4Record.ID, record.Domain, record.Host, "A", ipv4address)
 		if err != nil {
 			resultError = errors.Join(resultError, err)
+		} else {
+			updateSuccessTotal.WithLabelValues(record.Host, record.Domain, "A").Inc()
 		}
 	} else {
 		log.WithFields(log.Fields{
@@ -117,6 +119,8 @@ func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ip
 		err = createOrUpdateRecord(ctx, client, ipv6Record.ID, record.Domain, record.Host, "AAAA", ipv6address)
 		if err != nil {
 			resultError = errors.Join(resultError, err)
+		} else {
+			updateSuccessTotal.WithLabelValues(record.Host, record.Domain, "AAAA").Inc()
 		}
 	} else {
 		log.WithFields(log.Fields{
