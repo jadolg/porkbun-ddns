@@ -72,4 +72,4 @@ snapcrafts:
         plugs: [ "network" ]
       porkbun-ddns:
         command: porkbun-ddns
-        plugs: [ "network", "home" , "removable-media"]
+        plugs: [ "network", "home" , "removable-media", "network-bind" ]
