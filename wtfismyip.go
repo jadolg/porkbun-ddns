@@ -49,6 +49,7 @@ func getIpAddresses(c configuration, wtfismyip WTFIsMyIPClient) (string, string)
 	if ipv4needed {
 		wtfIPv4address, err := wtfismyip.getIpAddress(false)
 		if err != nil {
+			resolveErrorsTotal.WithLabelValues("A").Inc()
 			log.Error(err)
 		}
 		ipv4address = wtfIPv4address
@@ -60,6 +61,7 @@ func getIpAddresses(c configuration, wtfismyip WTFIsMyIPClient) (string, string)
 	if ipv6needed {
 		wtfIPv6address, err := wtfismyip.getIpAddress(true)
 		if err != nil {
+			resolveErrorsTotal.WithLabelValues("AAAA").Inc()
 			log.Error(err)
 		}
 		ipv6address = wtfIPv6address
