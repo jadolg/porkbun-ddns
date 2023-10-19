@@ -10,6 +10,13 @@ import (
 )
 
 var (
+	resolveErrorsTotal = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "porkbun_resolve_errors_total",
+			Help: "The total number of errors trying to resolve the current ip address",
+		},
+		[]string{"record_type"},
+	)
 	updateErrorsTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "porkbun_update_errors_total",
