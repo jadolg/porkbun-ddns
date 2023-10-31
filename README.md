@@ -31,35 +31,6 @@ Grab the binary for your system/architecture directly from the [release](https:/
 
 You can also just install from GitHub using Go directly `go install github.com/jadolg/porkbun-ddns@v0.6.1`
 
-## Example configuration
-
-```yaml
-update_interval_minutes: 5
-
-credentials:
-  prod:
-    porkbun_api_key: changeme
-    porkbun_secret_key: changeme
-  dev:
-    porkbun_api_key: changeme
-    porkbun_secret_key: changeme
-
-records:
-  - domain: example.com
-    host: www
-    ipv6: true
-    ipv4: true
-    credentials: prod
-  - domain: example.com
-    host: blog
-    ipv4: true
-    credentials: dev
-
-metrics:
-  enabled: false
-  port: 7879
-```
-
 ## Metrics
 
 To enable the collection of metrics, change the config file and set a valid port.

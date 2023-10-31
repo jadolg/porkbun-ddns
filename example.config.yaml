@@ -18,3 +18,7 @@ records:
     host: blog
     ipv4: true
     credentials: dev
+
+metrics:
+  enabled: false
+  port: 7879
