@@ -1,0 +1,22 @@
+name: govulncheck
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron: 0 19 * * 5 
+
+jobs:
+  govulncheck:
+    runs-on: ubuntu-latest
+    name: Run govulncheck
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+           go-version-file: go.mod
+           go-package: ./...
