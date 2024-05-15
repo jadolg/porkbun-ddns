@@ -20,4 +20,4 @@ jobs:
         with:
            go-version-file: go.mod
            go-package: ./...
-           check-latest: false
+           check-latest: true
