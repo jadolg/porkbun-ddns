@@ -24,9 +24,13 @@ var (
 		},
 		[]string{"host", "domain"},
 	)
-	credentialsErrorTotal = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "porkbun_credentials_error_total",
+	credentialsErrorsTotal = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "porkbun_credentials_errors_total",
 		Help: "The total number of credentials errors",
+	})
+	connectionErrorsTotal = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "porkbun_connection_errors_total",
+		Help: "The total number of connection errors (while connecting to porkbun)",
 	})
 	updateSuccessTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{

@@ -87,7 +87,7 @@ func updateRecords(c configuration) {
 	for _, record := range c.Records {
 		client, exists := clients[record.Credentials]
 		if !exists {
-			credentialsErrorTotal.Inc()
+			credentialsErrorsTotal.Inc()
 			log.Errorf("Credentials not found: %s", record.Credentials)
 			continue
 		}
