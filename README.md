@@ -36,6 +36,7 @@ You can also just install from GitHub using Go directly `go install github.com/j
 To enable the collection of metrics, change the config file and set a valid port.
 The current metrics are:
 - porkbun_update_errors_total
-- porkbun_credentials_error_total
+- porkbun_credentials_errors_total
+- porkbun_connection_errors_total
 - porkbun_resolve_errors_total
 - porkbun_update_success_total
