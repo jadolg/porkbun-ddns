@@ -41,6 +41,18 @@ var (
 	)
 )
 
+// initMetrics initializes the metrics with the records provided in the configuration
+// We want to have 0 as a baseline for all possible labels instead of non-existing metrics
+func initMetrics(records []Record) {
+	for _, record := range records {
+		updateSuccessTotal.WithLabelValues(record.Host, record.Domain, "A").Add(0)
+		updateSuccessTotal.WithLabelValues(record.Host, record.Domain, "AAAA").Add(0)
+		updateErrorsTotal.WithLabelValues(record.Host, record.Domain).Add(0)
+		resolveErrorsTotal.WithLabelValues("A").Add(0)
+		resolveErrorsTotal.WithLabelValues("AAAA").Add(0)
+	}
+}
+
 func healthcheckHandler(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	_, err := fmt.Fprintf(w, "OK")

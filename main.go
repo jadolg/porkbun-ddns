@@ -51,6 +51,7 @@ func main() {
 			}
 		}()
 	}
+	initMetrics(c.Records)
 	updateRecords(c)
 
 	if !runOnce {
