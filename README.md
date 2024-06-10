@@ -1,6 +1,6 @@
 # porkbun-ddns
 
-This project updates your DNS records at Porkbun with your current public IP address.
+This project updates your DNS records at [Porkbun](https://porkbun.com/) with your current public IP address.
 Your IP address is determined using https://wtfismyip.com/
 
 ## Install
