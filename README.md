@@ -29,7 +29,7 @@ Grab the binary for your system/architecture directly from the [release](https:/
 
 ### From source
 
-You can also just install from GitHub using Go directly `go install github.com/jadolg/porkbun-ddns@v0.6.1`
+You can also just install from GitHub using Go directly `go install github.com/jadolg/porkbun-ddns@latest`
 
 ## Metrics
 
