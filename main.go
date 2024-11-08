@@ -80,7 +80,7 @@ func updateRecords(c configuration) {
 		log.Fatal(err)
 	}
 
-	log.Info("Updating records")
+	log.Debug("Updating records")
 	ipv4address, ipv6address := getIpAddresses(c, wtfismyipClient{})
 
 	ctx := context.Background()
@@ -106,5 +106,5 @@ func updateRecords(c configuration) {
 			}).Error(err)
 		}
 	}
-	log.Info("Records updated")
+	log.Debug("Records updated")
 }
