@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/nrdcg/porkbun"
 	log "github.com/sirupsen/logrus"
@@ -68,11 +69,11 @@ func getRecords(ctx context.Context, domain, host string, client *porkbun.Client
 	return &ipv4Record, &ipv6Record, nil
 }
 
-func getPorkbunClients(credentials map[string]PorkbunCredentials) (map[string]*porkbun.Client, error) {
+func getPorkbunClients(credentials map[string]PorkbunCredentials, timeout time.Duration) (map[string]*porkbun.Client, error) {
 	clients := make(map[string]*porkbun.Client)
 
 	for key, credential := range credentials {
-		client, err := getPorkbunClient(credential, key)
+		client, err := getPorkbunClient(credential, key, timeout)
 		if err != nil {
 			connectionErrorsTotal.Inc()
 			log.Errorf("Error getting client for credentials '%s': %v", key, err)
@@ -83,9 +84,9 @@ func getPorkbunClients(credentials map[string]PorkbunCredentials) (map[string]*p
 	return clients, nil
 }
 
-func getPorkbunClient(credentials PorkbunCredentials, credentialsName string) (*porkbun.Client, error) {
+func getPorkbunClient(credentials PorkbunCredentials, credentialsName string, timeout time.Duration) (*porkbun.Client, error) {
 	client := porkbun.New(credentials.PorkbunSecretKey, credentials.PorkbunAPIKey)
-
+	client.HTTPClient.Timeout = timeout
 	ctx := context.Background()
 
 	yourIP, err := client.Ping(ctx)

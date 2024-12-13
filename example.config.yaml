@@ -1,4 +1,5 @@
 update_interval_minutes: 5
+timeout: 20s
 
 credentials:
   prod:

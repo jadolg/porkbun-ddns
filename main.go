@@ -75,7 +75,7 @@ func configureLogs(logLevel string) error {
 }
 
 func updateRecords(c configuration) {
-	clients, err := getPorkbunClients(c.PorkbunCredentials)
+	clients, err := getPorkbunClients(c.PorkbunCredentials, c.Timeout)
 	if err != nil {
 		log.Fatal(err)
 	}
