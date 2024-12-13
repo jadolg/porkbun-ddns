@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -30,6 +31,7 @@ type configuration struct {
 	UpdateIntervalMinutes int                           `yaml:"update_interval_minutes"`
 	PorkbunCredentials    map[string]PorkbunCredentials `yaml:"credentials"`
 	Metrics               MetricsConfig                 `yaml:"metrics"`
+	Timeout               time.Duration                 `yaml:"timeout"`
 }
 
 func getConfig(configFile string) (configuration, error) {
@@ -56,6 +58,14 @@ func getConfig(configFile string) (configuration, error) {
 		if _, found := c.PorkbunCredentials[record.Credentials]; !found {
 			return configuration{}, fmt.Errorf("invalid record credentials detected %+v", record)
 		}
+	}
+
+	if c.Timeout == 0 {
+		c.Timeout = 10 * time.Second
+	}
+
+	if c.UpdateIntervalMinutes == 0 {
+		c.UpdateIntervalMinutes = 5
 	}
 
 	return c, nil
