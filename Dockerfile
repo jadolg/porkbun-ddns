@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine AS build
+FROM golang:1.24-alpine AS build
 
 RUN adduser --uid 1000 --disabled-password porkbun-ddns-user
 
