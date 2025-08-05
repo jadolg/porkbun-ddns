@@ -1,4 +1,6 @@
 name: govulncheck
+permissions:
+  contents: read
 
 on:
   push:
