@@ -2,9 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	log "github.com/sirupsen/logrus"
 	"io"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // WTFIsMyIPData is a data representation with the same structure returned by https://wtfismyip.com/json
@@ -17,12 +18,14 @@ type WTFIsMyIPClient interface {
 }
 
 type wtfismyipClient struct {
+	v4Endpoint string
+	v6Endpoint string
 }
 
 func (wtfismyip wtfismyipClient) getIpAddress(ipv6 bool) (string, error) {
-	wtfismyipURL := "https://ipv4.wtfismyip.com/json"
+	wtfismyipURL := wtfismyip.v4Endpoint
 	if ipv6 {
-		wtfismyipURL = "https://ipv6.wtfismyip.com/json"
+		wtfismyipURL = wtfismyip.v6Endpoint
 	}
 	response, err := http.Get(wtfismyipURL)
 	if err != nil {
