@@ -81,7 +81,10 @@ func updateRecords(c configuration) {
 	}
 
 	log.Debug("Updating records")
-	ipv4address, ipv6address := getIpAddresses(c, wtfismyipClient{})
+	ipv4address, ipv6address := getIpAddresses(c, wtfismyipClient{
+		v4Endpoint: c.WTFIsMyIP.V4Endpoint,
+		v6Endpoint: c.WTFIsMyIP.V6Endpoint,
+	})
 
 	ctx := context.Background()
 

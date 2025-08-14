@@ -1,5 +1,8 @@
 update_interval_minutes: 5
 timeout: 20s
+wtfismyip:
+  v4: https://ipv4.wtfismyip.com/json
+  v6: https://ipv6.wtfismyip.com/json
 
 credentials:
   prod:

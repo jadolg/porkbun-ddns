@@ -8,6 +8,13 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const (
+	// DefaultWTFIsMyIPV4Endpoint is the default endpoint for IPv4 address retrieval
+	DefaultWTFIsMyIPV4Endpoint = "https://ipv4.wtfismyip.com/json"
+	// DefaultWTFIsMyIPV6Endpoint is the default endpoint for IPv6 address retrieval
+	DefaultWTFIsMyIPV6Endpoint = "https://ipv6.wtfismyip.com/json"
+)
+
 type Record struct {
 	Domain      string `yaml:"domain"`
 	Host        string `yaml:"host,omitempty"`
@@ -26,12 +33,18 @@ type MetricsConfig struct {
 	Port    int  `yaml:"port"`
 }
 
+type WTFIsMyIPConfig struct {
+	V4Endpoint string `yaml:"v4"`
+	V6Endpoint string `yaml:"v6"`
+}
+
 type configuration struct {
 	Records               []Record                      `yaml:"records"`
 	UpdateIntervalMinutes int                           `yaml:"update_interval_minutes"`
 	PorkbunCredentials    map[string]PorkbunCredentials `yaml:"credentials"`
 	Metrics               MetricsConfig                 `yaml:"metrics"`
 	Timeout               time.Duration                 `yaml:"timeout"`
+	WTFIsMyIP             WTFIsMyIPConfig               `yaml:"wtfismyip"`
 }
 
 func getConfig(configFile string) (configuration, error) {
@@ -66,6 +79,14 @@ func getConfig(configFile string) (configuration, error) {
 
 	if c.UpdateIntervalMinutes == 0 {
 		c.UpdateIntervalMinutes = 5
+	}
+
+	if c.WTFIsMyIP.V4Endpoint == "" {
+		c.WTFIsMyIP.V4Endpoint = DefaultWTFIsMyIPV4Endpoint
+	}
+
+	if c.WTFIsMyIP.V6Endpoint == "" {
+		c.WTFIsMyIP.V6Endpoint = DefaultWTFIsMyIPV6Endpoint
 	}
 
 	return c, nil

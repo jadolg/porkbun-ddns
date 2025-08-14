@@ -2,9 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	log "github.com/sirupsen/logrus"
+	"fmt"
 	"io"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // WTFIsMyIPData is a data representation with the same structure returned by https://wtfismyip.com/json
@@ -17,27 +19,29 @@ type WTFIsMyIPClient interface {
 }
 
 type wtfismyipClient struct {
+	v4Endpoint string
+	v6Endpoint string
 }
 
 func (wtfismyip wtfismyipClient) getIpAddress(ipv6 bool) (string, error) {
-	wtfismyipURL := "https://ipv4.wtfismyip.com/json"
+	wtfismyipURL := wtfismyip.v4Endpoint
 	if ipv6 {
-		wtfismyipURL = "https://ipv6.wtfismyip.com/json"
+		wtfismyipURL = wtfismyip.v6Endpoint
 	}
 	response, err := http.Get(wtfismyipURL)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error calling wtfismyip endpoint %s: %w", wtfismyipURL, err)
 	}
 
 	b, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error reading response body from wtfismyip endpoint %s: %w", wtfismyipURL, err)
 	}
 
 	data := WTFIsMyIPData{}
 	err = json.Unmarshal(b, &data)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("error unmarshalling response from wtfismyip endpoint %s: %w", wtfismyipURL, err)
 	}
 
 	return data.YourFuckingIPAddress, nil
@@ -50,7 +54,7 @@ func getIpAddresses(c configuration, wtfismyip WTFIsMyIPClient) (string, string)
 		wtfIPv4address, err := wtfismyip.getIpAddress(false)
 		if err != nil {
 			resolveErrorsTotal.WithLabelValues("A").Inc()
-			log.Error(err)
+			log.Errorf("Unable to get ipv4 address: %v", err)
 		}
 		ipv4address = wtfIPv4address
 		log.Debugf("Current host ipv4: %s", ipv4address)
@@ -62,7 +66,7 @@ func getIpAddresses(c configuration, wtfismyip WTFIsMyIPClient) (string, string)
 		wtfIPv6address, err := wtfismyip.getIpAddress(true)
 		if err != nil {
 			resolveErrorsTotal.WithLabelValues("AAAA").Inc()
-			log.Error(err)
+			log.Errorf("Unable to get ipv6 address: %v", err)
 		}
 		ipv6address = wtfIPv6address
 		log.Debugf("Current host ipv6: %s", ipv6address)
