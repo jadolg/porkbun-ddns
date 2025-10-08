@@ -3,6 +3,8 @@
 This project updates your DNS records at [Porkbun](https://porkbun.com/) with your current public IP address.
 Your IP address is determined using https://wtfismyip.com/
 
+Follow the white rabbit: https://dev.to/jadolg/keep-porkbun-dns-records-updated-automatically-with-your-current-ip-3539
+
 ## Install
 
 ### Snapcraft
