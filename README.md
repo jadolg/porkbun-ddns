@@ -26,6 +26,15 @@ docker run -d --restart always --network host -v $PWD/config.yaml:/config.yaml g
 ```
 *note:* I'm using `--network host` to avoid setting up IPv6 in Docker.
 
+### Debian/Ubuntu
+
+```bash
+wget -O - https://deb.akiel.dev/gpg.pub.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/akiel.gpg > /dev/null
+sudo apt-add-repository deb "https://deb.akiel.dev/ all main"
+sudo apt install porkbun-ddns
+```
+or download the **.deb** from the Releases page and manually install with dpkg
+
 ### Direct download
 
 Not a fan of running snaps or docker? Not a problem!
