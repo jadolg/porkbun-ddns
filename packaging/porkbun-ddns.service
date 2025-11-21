@@ -1,5 +1,5 @@
 [Unit]
-Description=Execute scripts remotelly with an HTTP call
+Description=Keep your Porkbun DNS records updated with your current IP address
 After=syslog.target network.target
 
 [Service]
