@@ -93,7 +93,7 @@ nfpms:
       postinstall: ./packaging/postinstall.sh
       preremove: ./packaging/preremove.sh
     contents:
-      - src: ./config.yaml
+      - src: ./packaging/config.yaml
         dst: /etc/porkbun-ddns/config.yaml
         type: config|noreplace
         file_info:
