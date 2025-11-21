@@ -35,6 +35,9 @@ sudo apt install porkbun-ddns
 ```
 or download the **.deb** from the Releases page and manually install with dpkg
 
+- The config file is under /etc/porbun-ddns/config.yaml
+- Remember to restart the service so it picks up the new configuration after updating it `sudo systemctl restart porbun-ddns`
+
 ### Direct download
 
 Not a fan of running snaps or docker? Not a problem!
