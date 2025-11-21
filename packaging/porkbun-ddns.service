@@ -1,0 +1,13 @@
+[Unit]
+Description=Execute scripts remotelly with an HTTP call
+After=syslog.target network.target
+
+[Service]
+User=root
+ExecStart=/usr/bin/porkbun-ddns -config /etc/porkbun-ddns/config.yaml
+Restart=always
+StandardError=append:/var/log/porkbun-ddns.log
+StandardOutput=append:/var/log/porkbun-ddns.log
+
+[Install]
+WantedBy=multi-user.target

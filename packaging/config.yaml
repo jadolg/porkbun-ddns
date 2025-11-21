@@ -1,0 +1,15 @@
+# For an example configuration see: https://raw.githubusercontent.com/jadolg/porkbun-ddns/refs/heads/main/example.config.yaml
+
+update_interval_minutes: 5
+timeout: 20s
+wtfismyip:
+  v4: https://ipv4.wtfismyip.com/json
+  v6: https://ipv6.wtfismyip.com/json
+
+credentials: {}
+
+records: []
+
+metrics:
+  enabled: false
+  port: 7879

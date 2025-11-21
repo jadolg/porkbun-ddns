@@ -74,3 +74,31 @@ snapcrafts:
       porkbun-ddns:
         command: porkbun-ddns
         plugs: [ "network", "home" , "removable-media", "network-bind" ]
+
+nfpms:
+  -
+    id: porkbun-ddns
+    package_name: porkbun-ddns
+    homepage: https://github.com/jadolg/porkbun-ddns
+    maintainer: Jorge Alberto Díaz Orozco (Akiel) <diazorozcoj@gmail.com>
+    description: |-
+      Keep your Porkbun DNS records updated with your current IP address
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/bin
+    priority: optional
+    scripts:
+      postinstall: ./packaging/postinstall.sh
+      preremove: ./packaging/preremove.sh
+    contents:
+      - src: ./config.yaml
+        dst: /etc/porkbun-ddns/config.yaml
+        type: config|noreplace
+        file_info:
+          mode: 0600
+      - src: ./packaging/porkbun-ddns.service
+        dst: /etc/systemd/system/porkbun-ddns.service
+        file_info:
+          mode: 0600
