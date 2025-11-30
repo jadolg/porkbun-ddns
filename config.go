@@ -20,6 +20,7 @@ type Record struct {
 	Host        string `yaml:"host,omitempty"`
 	IpV6        bool   `yaml:"ipv6"`
 	IpV4        bool   `yaml:"ipv4"`
+	Notes       string `yaml:"notes,omitempty"`
 	Credentials string `yaml:"credentials"`
 }
 

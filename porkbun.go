@@ -11,7 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func createOrUpdateRecord(ctx context.Context, client *porkbun.Client, recordID string, domain, host, recordType, address string) error {
+func createOrUpdateRecord(ctx context.Context, client *porkbun.Client, recordID string, record Record, recordType string, address string) error {
 	if recordID != "" {
 		recordIDint, err := strconv.Atoi(recordID)
 		if err != nil {
@@ -19,30 +19,30 @@ func createOrUpdateRecord(ctx context.Context, client *porkbun.Client, recordID 
 		}
 		log.WithFields(log.Fields{
 			"record id":   recordID,
-			"domain":      domain,
-			"host":        host,
+			"domain":      record.Domain,
+			"host":        record.Host,
 			"record type": recordType,
 			"address":     address,
 		}).Info("Updating record")
-		return client.EditRecord(ctx, domain, recordIDint, porkbun.Record{
-			Name:    host,
+		return client.EditRecord(ctx, record.Domain, recordIDint, porkbun.Record{
+			Name:    record.Host,
 			Type:    recordType,
 			Content: address,
-			Notes:   "DDNS",
+			Notes:   record.Notes,
 		})
 	} else {
 		log.WithFields(log.Fields{
 			"record id":   recordID,
-			"domain":      domain,
-			"host":        host,
+			"domain":      record.Domain,
+			"host":        record.Host,
 			"record type": recordType,
 			"address":     address,
 		}).Info("Creating record")
-		_, err := client.CreateRecord(ctx, domain, porkbun.Record{
-			Name:    host,
+		_, err := client.CreateRecord(ctx, record.Domain, porkbun.Record{
+			Name:    record.Host,
 			Type:    recordType,
 			Content: address,
-			Notes:   "DDNS",
+			Notes:   record.Notes,
 		})
 		return err
 	}
@@ -103,8 +103,8 @@ func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ip
 	if err != nil {
 		resultError = errors.Join(resultError, err)
 	}
-	if record.IpV4 && ipv4Record != nil && ipv4address != "" && ipv4Record.Content != ipv4address {
-		err = createOrUpdateRecord(ctx, client, ipv4Record.ID, record.Domain, record.Host, "A", ipv4address)
+	if record.IpV4 && ipv4Record != nil && ipv4address != "" && (ipv4Record.Content != ipv4address || ipv4Record.Notes != record.Notes) {
+		err = createOrUpdateRecord(ctx, client, ipv4Record.ID, record, "A", ipv4address)
 		if err != nil {
 			resultError = errors.Join(resultError, err)
 		} else {
@@ -116,8 +116,8 @@ func updateRecord(ctx context.Context, record Record, client *porkbun.Client, ip
 			"domain": record.Domain,
 		}).Debug("Ipv4 update not required")
 	}
-	if record.IpV6 && ipv6Record != nil && ipv6address != "" && ipv6Record.Content != ipv6address {
-		err = createOrUpdateRecord(ctx, client, ipv6Record.ID, record.Domain, record.Host, "AAAA", ipv6address)
+	if record.IpV6 && ipv6Record != nil && ipv6address != "" && (ipv6Record.Content != ipv6address || ipv6Record.Notes != record.Notes) {
+		err = createOrUpdateRecord(ctx, client, ipv6Record.ID, record, "AAAA", ipv6address)
 		if err != nil {
 			resultError = errors.Join(resultError, err)
 		} else {
