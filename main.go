@@ -103,6 +103,7 @@ func updateRecords(c configuration) {
 				"domain":      record.Domain,
 				"IPv4":        record.IpV4,
 				"IPv6":        record.IpV6,
+				"Notes":       record.Notes,
 				"credentials": record.Credentials,
 				"IPv4Address": ipv4address,
 				"IPv6Address": ipv6address,
