@@ -138,6 +138,7 @@ func Test_getConfig(t *testing.T) {
 			IpV6:        false,
 			IpV4:        true,
 			Credentials: "dev",
+			Notes:       "Development blog record set from host",
 		},
 	}, config.Records)
 }
