@@ -1,6 +1,6 @@
 module github.com/jadolg/porkbun-ddns
 
-go 1.26.3
+go 1.26.4
 
 require (
 	github.com/nrdcg/porkbun v0.4.0
