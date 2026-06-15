@@ -47,6 +47,36 @@ Grab the binary for your system/architecture directly from the [release](https:/
 
 You can also just install from GitHub using Go directly `go install github.com/jadolg/porkbun-ddns@latest`
 
+## Verifying signatures
+
+Docker images and release binaries are signed in CI using [cosign](https://github.com/sigstore/cosign) keyless signing (Sigstore + GitHub OIDC). No public key is needed; verification checks the signing identity against this repository's release workflow.
+
+### Docker image
+
+```bash
+cosign verify ghcr.io/jadolg/porkbun-ddns:latest \
+  --certificate-identity-regexp '^https://github.com/jadolg/porkbun-ddns/.github/workflows/release.yml@refs/tags/.*$' \
+  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com'
+```
+
+### Binaries
+
+Each release ships a `checksums.txt` along with its signature (`checksums.txt.sig`) and signing certificate (`checksums.txt.pem`). Download all three from the [release](https://github.com/jadolg/porkbun-ddns/releases) page next to the binary archive, then verify:
+
+```bash
+cosign verify-blob checksums.txt \
+  --certificate checksums.txt.pem \
+  --signature checksums.txt.sig \
+  --certificate-identity-regexp '^https://github.com/jadolg/porkbun-ddns/.github/workflows/release.yml@refs/tags/.*$' \
+  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com'
+```
+
+Once `checksums.txt` is verified, confirm your downloaded archive matches its checksum:
+
+```bash
+sha256sum --ignore-missing -c checksums.txt
+```
+
 ## Metrics
 
 To enable the collection of metrics, change the config file and set a valid port.
