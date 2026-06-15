@@ -21,6 +21,8 @@ jobs:
           go-version-file: go.mod
       - name: Install Cosign
         uses: sigstore/cosign-installer@v4.1.2
+        with:
+          cosign-release: v2.6.3
       - name: Install Snapcraft
         run: |
           sudo snap install snapcraft --classic --channel edge
@@ -57,6 +59,8 @@ jobs:
         uses: docker/setup-buildx-action@v4
       - name: Install Cosign
         uses: sigstore/cosign-installer@v4.1.2
+        with:
+          cosign-release: v2.6.3
       - name: Build and push
         id: build
         uses: docker/build-push-action@v7
