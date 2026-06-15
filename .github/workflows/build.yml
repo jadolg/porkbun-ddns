@@ -25,3 +25,24 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+  goreleaser:
+    name: test goreleaser build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Set up Go
+      uses: actions/setup-go@v6
+      with:
+        go-version-file: go.mod
+
+    - name: Run GoReleaser
+      uses: goreleaser/goreleaser-action@v7
+      with:
+        distribution: goreleaser
+        version: '~> v2'
+        args: release --snapshot --clean --skip=publish,snapcraft
