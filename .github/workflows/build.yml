@@ -29,6 +29,9 @@ jobs:
   goreleaser:
     name: test goreleaser build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
     - name: Checkout
       uses: actions/checkout@v6
@@ -39,6 +42,11 @@ jobs:
       uses: actions/setup-go@v6
       with:
         go-version-file: go.mod
+
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v4.1.2
+      with:
+        cosign-release: v2.6.3
 
     - name: Run GoReleaser
       uses: goreleaser/goreleaser-action@v7
