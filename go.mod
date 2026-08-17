@@ -5,7 +5,7 @@ go 1.26.6
 require (
 	github.com/nrdcg/porkbun v0.4.0
 	github.com/prometheus/client_golang v1.24.1
-	github.com/sirupsen/logrus v1.9.4
+	github.com/sirupsen/logrus v1.10.0
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/term v0.45.0
 	gopkg.in/yaml.v3 v3.0.1
