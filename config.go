@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	// DefaultWTFIsMyIPV4Endpoint is the default endpoint for IPv4 address retrieval
-	DefaultWTFIsMyIPV4Endpoint = "https://ipv4.r4bbit.net/json"
-	// DefaultWTFIsMyIPV6Endpoint is the default endpoint for IPv6 address retrieval
-	DefaultWTFIsMyIPV6Endpoint = "https://ipv6.r4bbit.net/json"
+	// DefaultIPInfoV4Endpoint is the default endpoint for IPv4 address retrieval
+	DefaultIPInfoV4Endpoint = "https://ipv4.r4bbit.net/json"
+	// DefaultIPInfoV6Endpoint is the default endpoint for IPv6 address retrieval
+	DefaultIPInfoV6Endpoint = "https://ipv6.r4bbit.net/json"
 )
 
 type Record struct {
@@ -34,7 +34,7 @@ type MetricsConfig struct {
 	Port    int  `yaml:"port"`
 }
 
-type WTFIsMyIPConfig struct {
+type IPInfoConfig struct {
 	V4Endpoint string `yaml:"v4"`
 	V6Endpoint string `yaml:"v6"`
 }
@@ -45,7 +45,8 @@ type configuration struct {
 	PorkbunCredentials    map[string]PorkbunCredentials `yaml:"credentials"`
 	Metrics               MetricsConfig                 `yaml:"metrics"`
 	Timeout               time.Duration                 `yaml:"timeout"`
-	WTFIsMyIP             WTFIsMyIPConfig               `yaml:"wtfismyip"`
+	IPInfo                IPInfoConfig                  `yaml:"ipinfo"`
+	LegacyWTFIsMyIP       IPInfoConfig                  `yaml:"wtfismyip"`
 }
 
 func getConfig(configFile string) (configuration, error) {
@@ -82,12 +83,16 @@ func getConfig(configFile string) (configuration, error) {
 		c.UpdateIntervalMinutes = 5
 	}
 
-	if c.WTFIsMyIP.V4Endpoint == "" {
-		c.WTFIsMyIP.V4Endpoint = DefaultWTFIsMyIPV4Endpoint
+	if c.IPInfo == (IPInfoConfig{}) {
+		c.IPInfo = c.LegacyWTFIsMyIP
 	}
 
-	if c.WTFIsMyIP.V6Endpoint == "" {
-		c.WTFIsMyIP.V6Endpoint = DefaultWTFIsMyIPV6Endpoint
+	if c.IPInfo.V4Endpoint == "" {
+		c.IPInfo.V4Endpoint = DefaultIPInfoV4Endpoint
+	}
+
+	if c.IPInfo.V6Endpoint == "" {
+		c.IPInfo.V6Endpoint = DefaultIPInfoV6Endpoint
 	}
 
 	return c, nil

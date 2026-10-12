@@ -9,66 +9,66 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// WTFIsMyIPData is a data representation with the same structure returned by https://ip.r4bbit.net/json
-type WTFIsMyIPData struct {
+// IPInfoData is a data representation with the same structure returned by https://ip.r4bbit.net/json
+type IPInfoData struct {
 	IPAddress string `json:"IPAddress"`
 }
 
-type WTFIsMyIPClient interface {
+type IPInfoClient interface {
 	getIpAddress(ipv6 bool) (string, error)
 }
 
-type wtfismyipClient struct {
+type ipinfoClient struct {
 	v4Endpoint string
 	v6Endpoint string
 }
 
-func (wtfismyip wtfismyipClient) getIpAddress(ipv6 bool) (string, error) {
-	wtfismyipURL := wtfismyip.v4Endpoint
+func (ipinfo ipinfoClient) getIpAddress(ipv6 bool) (string, error) {
+	ipinfoURL := ipinfo.v4Endpoint
 	if ipv6 {
-		wtfismyipURL = wtfismyip.v6Endpoint
+		ipinfoURL = ipinfo.v6Endpoint
 	}
-	response, err := http.Get(wtfismyipURL)
+	response, err := http.Get(ipinfoURL)
 	if err != nil {
-		return "", fmt.Errorf("error calling wtfismyip endpoint %s: %w", wtfismyipURL, err)
+		return "", fmt.Errorf("error calling ipinfo endpoint %s: %w", ipinfoURL, err)
 	}
 
 	b, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", fmt.Errorf("error reading response body from wtfismyip endpoint %s: %w", wtfismyipURL, err)
+		return "", fmt.Errorf("error reading response body from ipinfo endpoint %s: %w", ipinfoURL, err)
 	}
 
-	data := WTFIsMyIPData{}
+	data := IPInfoData{}
 	err = json.Unmarshal(b, &data)
 	if err != nil {
-		return "", fmt.Errorf("error unmarshalling response from wtfismyip endpoint %s: %w", wtfismyipURL, err)
+		return "", fmt.Errorf("error unmarshalling response from ipinfo endpoint %s: %w", ipinfoURL, err)
 	}
 
 	return data.IPAddress, nil
 }
 
-func getIpAddresses(c configuration, wtfismyip WTFIsMyIPClient) (string, string) {
+func getIpAddresses(c configuration, client IPInfoClient) (string, string) {
 	ipv4needed, ipv6needed := ipNeeded(c)
 	ipv4address := ""
 	if ipv4needed {
-		wtfIPv4address, err := wtfismyip.getIpAddress(false)
+		addr, err := client.getIpAddress(false)
 		if err != nil {
 			resolveErrorsTotal.WithLabelValues("A").Inc()
 			log.Errorf("Unable to get ipv4 address: %v", err)
 		}
-		ipv4address = wtfIPv4address
+		ipv4address = addr
 		log.Debugf("Current host ipv4: %s", ipv4address)
 	} else {
 		log.Debug("No ipv4 needed")
 	}
 	ipv6address := ""
 	if ipv6needed {
-		wtfIPv6address, err := wtfismyip.getIpAddress(true)
+		addr, err := client.getIpAddress(true)
 		if err != nil {
 			resolveErrorsTotal.WithLabelValues("AAAA").Inc()
 			log.Errorf("Unable to get ipv6 address: %v", err)
 		}
-		ipv6address = wtfIPv6address
+		ipv6address = addr
 		log.Debugf("Current host ipv6: %s", ipv6address)
 	} else {
 		log.Debug("No ipv6 needed")

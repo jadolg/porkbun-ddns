@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-type fakeWtfismyipClient struct {
+type fakeIPInfoClient struct {
 }
 
-func (wtfismyip fakeWtfismyipClient) getIpAddress(ipv6 bool) (string, error) {
+func (ipinfo fakeIPInfoClient) getIpAddress(ipv6 bool) (string, error) {
 	if ipv6 {
 		return "9afb:8b5f:078a:b914:e59e:f927:b0fa:ff31", nil
 	}
@@ -26,7 +26,7 @@ func TestUnusedFromRecordsProduceEmptyIpAddresses(t *testing.T) {
 			},
 		},
 	}
-	ipv4, ipv6 := getIpAddresses(c, fakeWtfismyipClient{})
+	ipv4, ipv6 := getIpAddresses(c, fakeIPInfoClient{})
 	assert.Equal(t, "", ipv4)
 	assert.Equal(t, "", ipv6)
 }
@@ -42,7 +42,7 @@ func TestUsedFromRecordsProduceIPPaddresses(t *testing.T) {
 			},
 		},
 	}
-	ipv4, ipv6 := getIpAddresses(c, fakeWtfismyipClient{})
+	ipv4, ipv6 := getIpAddresses(c, fakeIPInfoClient{})
 	assert.Equal(t, "194.52.151.172", ipv4)
 	assert.Equal(t, "9afb:8b5f:078a:b914:e59e:f927:b0fa:ff31", ipv6)
 }
