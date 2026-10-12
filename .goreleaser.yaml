@@ -68,7 +68,7 @@ snapcrafts:
     summary: Keep your Porkbun DNS records updated with your current IP address
     description: |
       This project updates your DNS records at Porkbun with your current public IP address.
-      Your IP address is determined using https://wtfismyip.com/
+      Your IP address is determined using https://ip.r4bbit.net/
       Place your configuration at `/var/snap/porkbun-ddns/common/config.yaml` and restart the service `snap restart porkbun-ddns.porkbun-ddns-daemon`
     channel_templates:
       - stable

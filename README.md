@@ -3,7 +3,7 @@
 [![CodeQL](https://github.com/jadolg/porkbun-ddns/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/jadolg/porkbun-ddns/actions/workflows/github-code-scanning/codeql) [![Go](https://github.com/jadolg/porkbun-ddns/actions/workflows/build.yml/badge.svg)](https://github.com/jadolg/porkbun-ddns/actions/workflows/build.yml) [![govulncheck](https://github.com/jadolg/porkbun-ddns/actions/workflows/govulncheck.yml/badge.svg)](https://github.com/jadolg/porkbun-ddns/actions/workflows/govulncheck.yml)
 
 This project updates your DNS records at [Porkbun](https://porkbun.com/) with your current public IP address.
-Your IP address is determined using https://wtfismyip.com/
+Your IP address is determined using https://ip.r4bbit.net/
 
 Follow the white rabbit: https://dev.to/jadolg/keep-porkbun-dns-records-updated-automatically-with-your-current-ip-3539
 

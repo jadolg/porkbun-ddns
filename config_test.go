@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -141,4 +143,13 @@ func Test_getConfig(t *testing.T) {
 			Notes:       "Development blog record set from host",
 		},
 	}, config.Records)
+}
+
+func TestGetConfig_legacyWTFIsMyIPKey(t *testing.T) {
+	f := filepath.Join(t.TempDir(), "config.yaml")
+	assert.NoError(t, os.WriteFile(f, []byte("wtfismyip:\n  v4: http://old4\n  v6: http://old6\n"), 0o600))
+	c, err := getConfig(f)
+	assert.NoError(t, err)
+	assert.Equal(t, "http://old4", c.IPInfo.V4Endpoint)
+	assert.Equal(t, "http://old6", c.IPInfo.V6Endpoint)
 }
