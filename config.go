@@ -10,9 +10,9 @@ import (
 
 const (
 	// DefaultWTFIsMyIPV4Endpoint is the default endpoint for IPv4 address retrieval
-	DefaultWTFIsMyIPV4Endpoint = "https://ipv4.wtfismyip.com/json"
+	DefaultWTFIsMyIPV4Endpoint = "https://ipv4.r4bbit.net/json"
 	// DefaultWTFIsMyIPV6Endpoint is the default endpoint for IPv6 address retrieval
-	DefaultWTFIsMyIPV6Endpoint = "https://ipv6.wtfismyip.com/json"
+	DefaultWTFIsMyIPV6Endpoint = "https://ipv6.r4bbit.net/json"
 )
 
 type Record struct {

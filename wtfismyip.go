@@ -9,9 +9,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// WTFIsMyIPData is a data representation with the same structure returned by https://wtfismyip.com/json
+// WTFIsMyIPData is a data representation with the same structure returned by https://ip.r4bbit.net/json
 type WTFIsMyIPData struct {
-	YourFuckingIPAddress string `json:"YourFuckingIPAddress"`
+	IPAddress string `json:"IPAddress"`
 }
 
 type WTFIsMyIPClient interface {
@@ -44,7 +44,7 @@ func (wtfismyip wtfismyipClient) getIpAddress(ipv6 bool) (string, error) {
 		return "", fmt.Errorf("error unmarshalling response from wtfismyip endpoint %s: %w", wtfismyipURL, err)
 	}
 
-	return data.YourFuckingIPAddress, nil
+	return data.IPAddress, nil
 }
 
 func getIpAddresses(c configuration, wtfismyip WTFIsMyIPClient) (string, string) {
